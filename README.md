@@ -1,24 +1,67 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# テーブル設計
 
-Things you may want to cover:
+## users テーブル
 
-* Ruby version
+| Column             | Type   | Options     |
+| ------------------ | ------ | ----------- |
+| nickname           | string | null: false |
+| email              | string | null: false |
+| encrypted_password | string | null: false |
+| name_zenkaku       | string | null: false |
+| name_katakana      | string | null: false |
+| birthday           | string | null: false |
 
-* System dependencies
+### Association
 
-* Configuration
+- has_many :items
+- has_many :purchases
 
-* Database creation
+## items テーブル
 
-* Database initialization
+| Column             | Type       | Options                        |
+| ------------------ | ---------- | ------------------------------ |
+| title              | string     | null: false                    |
+| description        | text       | null: false                    |
+| category           | string     | null: false                    |
+| condition          | string     | null: false                    |
+| shipping_fee       | string     | null: false                    |
+| shipping_origin    | string     | null: false                    |
+| shipping_lead_time | string     | null: false                    |
+| price              | integer    | null: false                    |
+| user               | references | null: false, foreign_key: true |
 
-* How to run the test suite
+### Association
 
-* Services (job queues, cache servers, search engines, etc.)
+- belongs_to :user
+- has_one    :purchase
 
-* Deployment instructions
+## purchases テーブル
 
-* ...
+| Column    | Type       | Options                        |
+| --------- | ---------- | ------------------------------ |
+| user      | references | null: false, foreign_key: true |
+| item      | references | null: false, foreign_key: true |
+
+### Association
+
+- belongs_to :user
+- belongs_to :items
+- has_one    :shipment
+
+## shipments テーブル
+
+| Column             | Type       | Options                        |
+| ------------------ | ---------- | ------------------------------ |
+| postcode           | string     | null: false                    |
+| prefecture         | string     | null: false                    |
+| city               | string     | null: false                    |
+| house_number       | string     | null: false                    |
+| building_name      | string     | null: false                    |
+| telephone          | string     | null: false                    |
+| purchase           | references | null: false, foreign_key: true |
+
+### Association
+
+- belongs_to :purchase

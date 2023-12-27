@@ -51,8 +51,20 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include "Password is too short (minimum is 6 characters)"
       end
 
-      it 'passwordが英数字混合でないと場合登録できない' do
+      it 'passwordが英数字混合でないと場合登録できない（数字のみの場合）' do
         @user.password = "01234567"
+        @user.valid?
+        expect(@user.errors.full_messages).to include "Password is invalid. Include both letters and numbers"
+      end
+
+      it 'passwordが英数字混合でないと場合登録できない（英字のみの場合）' do
+        @user.password = "abcdefgh"
+        @user.valid?
+        expect(@user.errors.full_messages).to include "Password is invalid. Include both letters and numbers"
+      end
+
+      it 'passwordが英数字混合でないと場合登録できない（全角文字の場合）' do
+        @user.password = "あいうえおかきくけこ"
         @user.valid?
         expect(@user.errors.full_messages).to include "Password is invalid. Include both letters and numbers"
       end
@@ -165,6 +177,12 @@ RSpec.describe User, type: :model do
         @user.last_name_katakana = "酢美酢"
         @user.valid?
         expect(@user.errors.full_messages).to include "Last name katakana 全角カタカナを使用してください"
+      end
+
+      it "birthdayが空では登録できない" do
+        @user.birthday = " "
+        @user.valid?
+        expect(@user.errors.full_messages).to include "Birthday can't be blank"
       end
     end
   end

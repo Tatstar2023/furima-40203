@@ -19,7 +19,9 @@ class Item < ApplicationRecord
                     numericality: {
                       greater_than_or_equal_to: 300,
                       allow_blank: true,
-                      message: 'must be greater than or equal to 300'
+                      message: 'must be greater than or equal to 300',
+                      less_than_or_equal_to: 9999999,
+                      message: 'must be less than or equal to 9999999'
                     }
   validates :image, presence: true
 

@@ -77,25 +77,30 @@ RSpec.describe Item, type: :model do
       it 'priceが数字以外では出品できない（漢字の場合）' do
         @item.price = '値段'
         @item.valid?
-        expect(@item.errors.full_messages).to include 'Price must be greater than or equal to 300'
+        expect(@item.errors.full_messages).to include 'Price must be less than or equal to 9999999'
       end
 
       it 'priceが数字以外では出品できない（ひらがなの場合）' do
         @item.price = 'ねだん'
         @item.valid?
-        expect(@item.errors.full_messages).to include 'Price must be greater than or equal to 300'
+        expect(@item.errors.full_messages).to include 'Price must be less than or equal to 9999999'
       end
 
       it 'priceが数字以外では出品できない（カタカナの場合）' do
         @item.price = 'ネダン'
         @item.valid?
-        expect(@item.errors.full_messages).to include 'Price must be greater than or equal to 300'
+        expect(@item.errors.full_messages).to include 'Price must be less than or equal to 9999999'
       end
 
       it 'priceの値が300より小さい場合出品できない' do
         @item.price = 290
         @item.valid?
-        expect(@item.errors.full_messages).to include 'Price must be greater than or equal to 300'
+        expect(@item.errors.full_messages).to include 'Price must be less than or equal to 9999999'
+      end
+      it 'priceの値が9999999より大きい場合出品できない' do
+        @item.price = 10000000
+        @item.valid?
+        expect(@item.errors.full_messages).to include 'Price must be less than or equal to 9999999'
       end
     end
   end

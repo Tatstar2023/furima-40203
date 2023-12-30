@@ -7,7 +7,7 @@ FactoryBot.define do
     shippingfee { Shippingfee.where.not(id: 0).sample }
     shippingorigin { Shippingorigin.where.not(id: 0).sample }
     shippingleadtime { Shippingleadtime.where.not(id: 0).sample }
-    price { Faker::Number.within(range: 300..1000) }
+    price { Faker::Number.within(range: 300..9999999) }
 
     association :user
 

@@ -2,6 +2,7 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!, only: [:index, :create]
 
   def index
+    gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
     @order_shipment = OrderShipment.new
     @orders = Item.find(params[:item_id])
     if @orders.user_id == current_user.id || @orders.order.present?

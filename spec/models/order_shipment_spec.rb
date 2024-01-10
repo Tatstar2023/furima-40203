@@ -54,13 +54,13 @@ RSpec.describe OrderShipment, type: :model do
         @order_shipment.telephone = ' '
         @order_shipment.valid?
         expect(@order_shipment.errors.full_messages).to include "Telephone can't be blank"
-        expect(@order_shipment.errors.full_messages).to include 'Telephone is the wrong length (should be 11 characters)'
+        expect(@order_shipment.errors.full_messages).to include 'Telephone is the wrong length (should be 10 or 11 characters)'
         expect(@order_shipment.errors.full_messages).to include 'Telephone is invalid. Input only number'
       end
       it 'telephoneが数字以外では購入できない1' do
         @order_shipment.telephone = 'かきくけこ'
         @order_shipment.valid?
-        expect(@order_shipment.errors.full_messages).to include 'Telephone is the wrong length (should be 11 characters)'
+        expect(@order_shipment.errors.full_messages).to include 'Telephone is the wrong length (should be 10 or 11 characters)'
         expect(@order_shipment.errors.full_messages).to include 'Telephone is invalid. Input only number'
       end
       it 'telephoneが数字以外では購入できない2' do

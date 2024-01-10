@@ -16,6 +16,10 @@ RSpec.describe OrderShipment, type: :model do
         @order_shipment.building_name = ''
         expect(@order_shipment).to be_valid
       end
+      it 'telephoneが10桁でも保存できること' do
+        @order_shipment.telephone = '0123456789'
+        expect(@order_shipment).to be_valid
+      end
     end
 
     context '購入できない場合' do
@@ -28,7 +32,6 @@ RSpec.describe OrderShipment, type: :model do
         @order_shipment.postcode = ' '
         @order_shipment.valid?
         expect(@order_shipment.errors.full_messages).to include "Postcode can't be blank"
-        expect(@order_shipment.errors.full_messages).to include 'Postcode is invalid. Include hyphen(-)'
       end
       it 'postcodeに-(ハイフン)がないと購入できない' do
         @order_shipment.postcode = '123456'
@@ -54,19 +57,26 @@ RSpec.describe OrderShipment, type: :model do
         @order_shipment.telephone = ' '
         @order_shipment.valid?
         expect(@order_shipment.errors.full_messages).to include "Telephone can't be blank"
-        expect(@order_shipment.errors.full_messages).to include 'Telephone is the wrong length (should be 10 or 11 characters)'
-        expect(@order_shipment.errors.full_messages).to include 'Telephone is invalid. Input only number'
       end
       it 'telephoneが数字以外では購入できない1' do
         @order_shipment.telephone = 'かきくけこ'
         @order_shipment.valid?
-        expect(@order_shipment.errors.full_messages).to include 'Telephone is the wrong length (should be 10 or 11 characters)'
         expect(@order_shipment.errors.full_messages).to include 'Telephone is invalid. Input only number'
       end
       it 'telephoneが数字以外では購入できない2' do
         @order_shipment.telephone = '090-2410-03'
         @order_shipment.valid?
         expect(@order_shipment.errors.full_messages).to include 'Telephone is invalid. Input only number'
+      end
+      it 'telephoneが9桁では購入できない' do
+        @order_shipment.telephone = '012345678'
+        @order_shipment.valid?
+        expect(@order_shipment.errors.full_messages).to include 'Telephone is the wrong length (should be 10 or 11 characters)'
+      end
+      it 'telephoneが12桁では購入できない' do
+        @order_shipment.telephone = '012345678901'
+        @order_shipment.valid?
+        expect(@order_shipment.errors.full_messages).to include 'Telephone is the wrong length (should be 10 or 11 characters)'
       end
       it 'userが紐付いていないと購入できない' do
         @order_shipment.user_id = nil
